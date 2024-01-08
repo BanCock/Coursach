@@ -70,7 +70,7 @@ void fillAliveCells()
 		}
 }
 
-void recreatrFieldNet()
+void recreateFieldNet()
 {
 	sfVertexArray_clear(field.fieldNet);
 	sfVector2i fieldSize = fieldSizes[FieldMode];
