@@ -4,6 +4,7 @@
 //hui2
 //hui3
 //hui4
+//hui5
 void gameInit()
 {
 	windowCreate();
