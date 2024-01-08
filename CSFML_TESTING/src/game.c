@@ -1,5 +1,9 @@
 #include "../headers/game.h"
 
+//hui
+//hui2
+//hui3
+//hui4
 void gameInit()
 {
 	windowCreate();
