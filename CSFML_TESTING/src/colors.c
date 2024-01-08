@@ -1,4 +1,4 @@
-#include "colors.h"
+#include "../headers/colors.h"
 
 
 
@@ -15,6 +15,8 @@ void setPalettes()
     MatrixTheme[NetColor].HexColor = 0x006400ff;
     MatrixTheme[WallColor].HexColor = 0x000000ff;
     MatrixTheme[TextColor].HexColor = 0xffffffff;
+
+    memcpy(CurTheme, MatrixTheme, sizeof(CurTheme));
 }
 
 sfColor ThemeTosfColor(union uPalete Theme)

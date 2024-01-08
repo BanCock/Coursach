@@ -18,6 +18,27 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\colors.c" />
+    <ClCompile Include="src\events.c" />
+    <ClCompile Include="src\field.c" />
+    <ClCompile Include="src\game.c" />
+    <ClCompile Include="src\interface.c" />
+    <ClCompile Include="src\main.c" />
+    <ClCompile Include="src\music.c" />
+    <ClCompile Include="src\params.c" />
+    <ClCompile Include="src\window.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="headers\colors.h" />
+    <ClInclude Include="headers\events.h" />
+    <ClInclude Include="headers\field.h" />
+    <ClInclude Include="headers\game.h" />
+    <ClInclude Include="headers\interface.h" />
+    <ClInclude Include="headers\music.h" />
+    <ClInclude Include="headers\params.h" />
+    <ClInclude Include="headers\window.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -102,7 +123,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\user1\Downloads\CSFML-2.5.1-windows-64-bit\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -119,7 +140,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\user1\Downloads\CSFML-2.5.1-windows-64-bit\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -132,28 +153,6 @@
       <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);csfml-system.lib;csfml-audio.lib;csfml-graphics.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="colors.c" />
-    <ClCompile Include="events.c" />
-    <ClCompile Include="game.c" />
-    <ClCompile Include="main.c" />
-    <ClCompile Include="interface.c" />
-    <ClCompile Include="music.c" />
-    <ClCompile Include="params.c" />
-    <ClCompile Include="patterns.c" />
-    <ClCompile Include="Source.c" />
-    <ClCompile Include="window.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="colors.h" />
-    <ClInclude Include="events.h" />
-    <ClInclude Include="game.h" />
-    <ClInclude Include="interface.h" />
-    <ClInclude Include="music.h" />
-    <ClInclude Include="params.h" />
-    <ClInclude Include="patterns.h" />
-    <ClInclude Include="window.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

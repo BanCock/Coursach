@@ -4,5 +4,6 @@
 #include <SFML/Audio.h>
 
 void setMusic();
+void cleanMusic();
 
 #endif // !MUSIC_H

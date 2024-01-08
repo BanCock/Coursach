@@ -1,4 +1,4 @@
-#include "params.h"
+#include "../headers/params.h"
 
 
 void setStartState()
@@ -8,7 +8,5 @@ void setStartState()
     menuStatus = MENU;
     BorderlessStatus = YES;
     enumTheme = MATRIX;
-    memcpy(CurTheme, MatrixTheme, sizeof(CurTheme));
-    memset(field, 0, sizeof(field));
     sfRenderWindow_clear(window, ThemeTosfColor(CurTheme[WallColor]));
 }

@@ -1,4 +1,4 @@
-#include "interface.h"
+#include "../headers/interface.h"
 
 static sfRectangleShape* aboutBackground;
 static sfText* aboutDescriptionHead;
@@ -8,9 +8,17 @@ static sfRectangleShape* settingstBackground;
 static sfText* settingsHead;
 static sfText* settingsText;
 
+static sfFont* font;
+
 static void drawMainMenu();
 static void drawAbout();
 static void drawSettings();
+static void drawPlay();
+
+void createFont()
+{
+    font = sfFont_createFromFile("BakbakOne-Regular.ttf");
+}
 
 void createButton(struct Button* button, sfVector2f size, sfVector2f position, const char* text)
 {
@@ -26,7 +34,6 @@ void createButton(struct Button* button, sfVector2f size, sfVector2f position, c
 	button->Bound.left = position.x;
 	button->Bound.top = position.y;
 
-    sfFont* font = sfFont_createFromFile("BakbakOne-Regular.ttf");
     button->Text = sfText_create();
     sfText_setString(button->Text, text);
     sfText_setFont(button->Text, font);
@@ -40,6 +47,7 @@ void createButton(struct Button* button, sfVector2f size, sfVector2f position, c
 
     sfText_setPosition(button->Text, TextPos);
     sfText_setFillColor(button->Text, ThemeTosfColor(CurTheme[TextColor]));
+    
 }
 
 void createMainMenu()
@@ -57,6 +65,7 @@ void createControlMenu()
     createButton(&controlMenu[B_CLEAR], CONTROLMENU_BUTTON_SIZE, (sfVector2f) { 0, 364 - 1 }, "Clear");
     createButton(&controlMenu[B_RANDOM], CONTROLMENU_BUTTON_SIZE, (sfVector2f) { 0, 456 - 1 }, "Random ");
     createButton(&controlMenu[B_BACK], CONTROLMENU_BUTTON_SIZE, (sfVector2f) { 0, 548 - 1 }, "Back");
+    sfRectangleShape_setFillColor(controlMenu[B_BACK].Shape, ThemeTosfColor(CurTheme[BackButtonColor]));
 }
 
 void createSettingsMenu()
@@ -80,7 +89,9 @@ void createSettingsMenu()
     sfRectangleShape_setPosition(settingstBackground, (sfVector2f) { 320, 200 });
     sfRectangleShape_setFillColor(settingstBackground, (sfColor) { 100, 100, 100, 75 });
 
-    sfFont* font = sfFont_createFromFile("BakbakOne-Regular.ttf");
+    settingsHead = sfText_create();
+    settingsText = sfText_create();
+
     sfText_setFont(settingsHead, font);
     sfText_setFont(settingsText, font);
 
@@ -95,8 +106,6 @@ void createSettingsMenu()
 
     sfText_setFillColor(settingsHead, ThemeTosfColor(CurTheme[TextColor]));
     sfText_setFillColor(settingsText, ThemeTosfColor(CurTheme[TextColor]));
-
-    sfFont_destroy(font);
 }
 
 void createAboutMenu()
@@ -109,7 +118,6 @@ void createAboutMenu()
     aboutDescriptionHead = sfText_create();
     aboutDescriptionText = sfText_create();
 
-    sfFont* font = sfFont_createFromFile("BakbakOne-Regular.ttf");
     sfText_setFont(aboutDescriptionHead, font);
     sfText_setFont(aboutDescriptionText, font);
 
@@ -117,23 +125,21 @@ void createAboutMenu()
     sfText_setCharacterSize(aboutDescriptionText, 30);
 
     sfText_setString(aboutDescriptionHead, "Created by:\n\n\nFrom:");
-    sfText_setString(aboutDescriptionText, "Ivanov Danil Sergeevich\n\
-                                            Shatalov Maksim Romanovich\n\
-                                            Sound by Rodion\n\n\
-                                            \
-                                            Saint Petersburg Polytechnic University\n\
-                                            Institute for Cyber Security\n\
-                                            and Information Protecton\n\
-                                            Group 4851001/20002\n\n\
-                                            \
-                                            (c) 2023 All Rights reserved");
+    sfText_setString(aboutDescriptionText, "Ivanov Danil Sergeevich\n"
+                                           "Shatalov Maksim Romanovich\n"
+                                           "Sound by Rodion\n\n"
+                                           
+                                           "Saint Petersburg Polytechnic University\n"
+                                           "Institute for Cyber Security\n"
+                                           "and Information Protecton\n"
+                                           "Group 4851001/20002\n\n"
+                                           
+                                           "(c) 2023 All Rights reserved");
     sfText_setPosition(aboutDescriptionHead, (sfVector2f) { 325.f, 200.f });
     sfText_setPosition(aboutDescriptionText, (sfVector2f) { 325.f, 250.f });
     
     sfText_setFillColor(aboutDescriptionHead, ThemeTosfColor(CurTheme[TextColor]));
     sfText_setFillColor(aboutDescriptionText, ThemeTosfColor(CurTheme[TextColor]));
-
-    sfFont_destroy(font);
 }
 
 void createTitle()
@@ -141,24 +147,58 @@ void createTitle()
     gameName = sfText_create();
     sfText_setString(gameName, "Life the Game");
 
-    sfFont* font = sfFont_createFromFile("protosans.ttf");
-    sfText_setFont(gameName, font);
+    sfFont* titleFont = sfFont_createFromFile("protosans.ttf");
+    sfText_setFont(gameName, titleFont);
     sfText_setCharacterSize(gameName, 120);
 
-    sfVector2f TextPos =
-    {
-        (1280 - strlen("Life the Game") * 80) / 2, \
-        40
-    };
+    sfVector2f TextPos = { 120.f, 40.f }; // (1280 - strlen("Life the Game") * 80) / 2, 40
+
     sfText_setPosition(gameName, TextPos);
 
     sfText_setFillColor(gameName, ThemeTosfColor(CurTheme[ButtonColor]));
-
+    //sfFont_destroy(titleFont);
 }
 
-void gameDraw()
+void loadPatterns()
+{
+    FILE* filePattern = fopen("MyPatternsList.txt", "r");
+    char patternName[10] = "";
+    sfVector2f position =
+    {
+        1280 - 181, \
+        180 - 1
+    };
+
+
+    memset(&startPattern, 0, sizeof(startPattern));
+    fscanf(filePattern, "%s ", patternName);
+    createButton(&startPattern.Button, CONTROLMENU_BUTTON_SIZE, position, patternName);
+
+    for (int j = 0; j < 64; j++)
+        for (int k = 0; k < 48; k++)
+            startPattern.Pattern[j][k] = fgetc(filePattern) - 48;
+
+    struct sPatterns* tmpPattern = &startPattern;
+    for (int i = 1; i < 5; i++)
+    {
+        tmpPattern->next = calloc(1, sizeof(struct sPatterns));
+        position.y += 92;
+
+        fscanf(filePattern, " %s ", patternName);
+        createButton(&tmpPattern->next->Button, CONTROLMENU_BUTTON_SIZE, position, patternName);
+
+        for (int j = 0; j < 64; j++)
+            for (int k = 0; k < 48; k++)
+                tmpPattern->next->Pattern[j][k] = fgetc(filePattern) - 48;
+
+        tmpPattern = tmpPattern->next;
+    }
+}
+
+void interfaceDraw()
 {
     sfRenderWindow_clear(window, ThemeTosfColor(CurTheme[WallColor]));
+
     sfRenderWindow_drawText(window, gameName, NULL);
 
     switch (menuStatus)
@@ -172,6 +212,7 @@ void gameDraw()
         break;
 
     case PLAYING:
+        drawPlay();
         break;
 
     case SETTINGS:
@@ -179,6 +220,7 @@ void gameDraw()
         break;
 
     }
+    sfRenderWindow_display(window);
 }
 
 static void drawMainMenu()
@@ -201,7 +243,7 @@ static void drawAbout()
     sfRenderWindow_drawText(window, controlMenu[B_BACK].Text, NULL);
 }
 
-void drawSettings()
+static void drawSettings()
 {
     sfRenderWindow_drawRectangleShape(window, settingstBackground, NULL);
 
@@ -215,4 +257,72 @@ void drawSettings()
     }
     sfRenderWindow_drawRectangleShape(window, controlMenu[B_BACK].Shape, NULL);
     sfRenderWindow_drawText(window, controlMenu[B_BACK].Text, NULL);
+}
+
+static void drawPlay()
+{
+    //TODO: Replace fillAliveCells - must change only one Vertex in events.c
+    fillAliveCells();
+    sfRenderWindow_drawVertexArray(window, field.fieldNet, NULL);
+    sfRenderWindow_drawVertexArray(window, field.aliveCells, NULL);
+
+    for (int i = 0; i < 5; i++)
+    {
+        sfRenderWindow_drawRectangleShape(window, controlMenu[i].Shape, NULL);
+        sfRenderWindow_drawText(window, controlMenu[i].Text, NULL);
+    }
+    
+    for (struct sPatterns* tmpPattern = &startPattern; tmpPattern != NULL; tmpPattern = tmpPattern->next)
+    {
+        sfRenderWindow_drawRectangleShape(window, tmpPattern->Button.Shape, NULL);
+        sfRenderWindow_drawText(window, tmpPattern->Button.Text, NULL);
+    }
+
+}
+
+void cleanInterface()
+{
+    struct sPatterns* tmpPattern = &startPattern;
+
+    for (int i = 0; i < 5; i++)
+    {
+        if (i < 3)
+        {
+            sfRectangleShape_destroy(settingsMenu[i].Shape);
+            sfText_destroy(settingsMenu[i].Text);
+        }
+        if (i < 4)
+        {
+            sfRectangleShape_destroy(mainMenu[i].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
+            sfText_destroy(mainMenu[i].Text);
+        }
+        sfRectangleShape_destroy(controlMenu[i].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
+        sfText_destroy(controlMenu[i].Text);
+
+        sfRectangleShape_destroy(tmpPattern->Button.Shape, ThemeTosfColor(CurTheme[ButtonColor]));
+        sfText_destroy(tmpPattern->Button.Text);
+        tmpPattern = tmpPattern->next;
+    }
+
+    sfRectangleShape_destroy(aboutBackground);
+    sfRectangleShape_destroy(settingstBackground);
+
+    sfText_destroy(settingsHead);
+    sfText_destroy(settingsText);
+
+    sfText_destroy(aboutDescriptionHead);
+    sfText_destroy(aboutDescriptionText);
+
+    sfFont_destroy(font);
+}
+
+void cleanPatterns()
+{
+    struct sPatterns* Pattern = startPattern.next;
+    for (; Pattern != NULL;)
+    {
+        struct sPatterns* tmp = Pattern->next;
+        free(Pattern);
+        Pattern = tmp;
+    }
 }

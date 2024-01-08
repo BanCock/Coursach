@@ -4,7 +4,6 @@
 #include <stdlib.h>
 
 #include "interface.h"
-#include "patterns.h"
 #include "window.h"
 
 

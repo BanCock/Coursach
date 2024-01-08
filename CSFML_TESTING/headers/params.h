@@ -1,13 +1,11 @@
 #ifndef PARAMS_H
 #define PARAMS_H
 
+#include <string.h>
+
 #include "colors.h"
 #include "window.h"
-#include "string.h"
-
-
-char field[128][72];
-sfVector2i fieldSizes[3] = { {64, 48}, {80, 60}, {128, 72} };
+#include "field.h"
 
 void setStartState();
 

@@ -1,4 +1,4 @@
-#include "game.h"
+#include "../headers/game.h"
 
 //hui
 //hui2
@@ -6,11 +6,14 @@
 void gameInit()
 {
 	windowCreate();
-	setStartState();
 	setPalettes();
+	setStartState();
+	createFont();
 	createMainMenu();
 	createControlMenu();
 	createSettingsMenu();
+	createAboutMenu();
+	createField();
 	createTitle();
 	loadPatterns();
 	setMusic();
@@ -21,6 +24,16 @@ void gameLoop()
 	while (sfRenderWindow_isOpen(window))
 	{
 		eventHandle();
-		gameDraw();
+		interfaceDraw();
+		fieldUpdate();
 	}
+}
+
+void deleteObjects()
+{
+	cleanInterface();
+	cleanField();
+	cleanPatterns();
+	cleanMusic();
+	cleanWindow();
 }

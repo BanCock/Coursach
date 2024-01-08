@@ -10,6 +10,7 @@
 sfRenderWindow* window;
 
 void windowCreate();
+void cleanWindow();
 
 #endif // !WINDOW_H
 
