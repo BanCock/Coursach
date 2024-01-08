@@ -1,7 +1,7 @@
 #include "game.h"
 
 //hui
-
+//hui2
 void gameInit()
 {
 	windowCreate();
