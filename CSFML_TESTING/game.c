@@ -2,6 +2,7 @@
 
 //hui
 //hui2
+//hui3
 void gameInit()
 {
 	windowCreate();
