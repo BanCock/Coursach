@@ -15,60 +15,57 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source.c">
+    <ClCompile Include="src\colors.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="main.c">
+    <ClCompile Include="src\events.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="game.c">
+    <ClCompile Include="src\field.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="window.c">
+    <ClCompile Include="src\game.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="params.c">
+    <ClCompile Include="src\interface.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="colors.c">
+    <ClCompile Include="src\main.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="interface.c">
+    <ClCompile Include="src\music.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="patterns.c">
+    <ClCompile Include="src\params.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="music.c">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="events.c">
+    <ClCompile Include="src\window.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="game.h">
+    <ClInclude Include="headers\colors.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="window.h">
+    <ClInclude Include="headers\events.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="params.h">
+    <ClInclude Include="headers\field.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="colors.h">
+    <ClInclude Include="headers\game.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="interface.h">
+    <ClInclude Include="headers\interface.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="patterns.h">
+    <ClInclude Include="headers\music.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="music.h">
+    <ClInclude Include="headers\params.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="events.h">
+    <ClInclude Include="headers\window.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

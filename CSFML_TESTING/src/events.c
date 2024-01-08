@@ -1,5 +1,6 @@
-#include "events.h"
+#include "../headers/events.h"
 
+static sfVector2i fieldSizes[3] = { {64, 48}, {80, 60}, {128, 72} };
 
 static sfBool leftClick(sfEvent event);
 static void clickHandle(float clickX, float clickY);
@@ -67,6 +68,7 @@ static void menuClick(float clickX, float clickY)
 		//TODO: Change createButton to size/position because there is no 
 		//necessity in full recreation
 		createButton(&controlMenu[B_BACK], CONTROLMENU_BUTTON_SIZE, (sfVector2f) { 0, 548 - 1 }, "Back");
+		sfRectangleShape_setFillColor(controlMenu[B_BACK].Shape, ThemeTosfColor(CurTheme[BackButtonColor]));
 	}
 	else if (sfFloatRect_contains(&mainMenu[B_SETTINGS].Bound, clickX, clickY))
 	{
@@ -74,6 +76,7 @@ static void menuClick(float clickX, float clickY)
 		//TODO: Change createButton to size/position because there is no 
 		//necessity in full recreation
 		createButton(&controlMenu[B_BACK], (sfVector2f) { 192.f, 72.f }, (sfVector2f) { 768.f, 608.f }, "Back");
+		sfRectangleShape_setFillColor(controlMenu[B_BACK].Shape, ThemeTosfColor(CurTheme[BackButtonColor]));
 	}
 	else if (sfFloatRect_contains(&mainMenu[B_ABOUT].Bound, clickX, clickY))
 	{
@@ -81,6 +84,7 @@ static void menuClick(float clickX, float clickY)
 		//TODO: Change createButton to size/position because there is no 
 		//necessity in full recreation
 		createButton(&controlMenu[B_BACK], (sfVector2f) { 192.f, 72.f }, (sfVector2f) { 768.f, 608.f }, "Back");
+		sfRectangleShape_setFillColor(controlMenu[B_BACK].Shape, ThemeTosfColor(CurTheme[BackButtonColor]));
 	}
 	else if (sfFloatRect_contains(&mainMenu[B_EXIT].Bound, clickX, clickY))
 	{
@@ -105,20 +109,22 @@ static void settingsClick(float clickX, float clickY)
 		{
 		case SMALL:
 			FieldMode = MEDIUM;
-			strcpy(settingsMenu[B_SIZE].Text, "80x60");
+			sfText_setString(settingsMenu[B_SIZE].Text, "80x60");
+
 			break;
 
 		case MEDIUM:
 			FieldMode = LARGE;
-			strcpy(settingsMenu[B_SIZE].Text, "128x72");
+			sfText_setString(settingsMenu[B_SIZE].Text, "128x72");
 			break;
 
 		case LARGE:
 			FieldMode = SMALL;
-			strcpy(settingsMenu[B_SIZE].Text, "64x48");
+			sfText_setString(settingsMenu[B_SIZE].Text, "64x48");
 			break;
 
 		}
+		recreatrFieldNet();
 	}
 	else if (sfFloatRect_contains(&settingsMenu[B_BORDER].Bound, clickX, clickY))
 	{
@@ -126,12 +132,12 @@ static void settingsClick(float clickX, float clickY)
 		{
 		case YES:
 			BorderlessStatus = NO;
-			strcpy(settingsMenu[B_BORDER].Text, "Off");
+			sfText_setString(settingsMenu[B_BORDER].Text, "Off");
 			break;
 
 		case NO:
 			BorderlessStatus = YES;
-			strcpy(settingsMenu[B_BORDER].Text, "On");
+			sfText_setString(settingsMenu[B_BORDER].Text, "On");
 			break;
 
 		}
@@ -143,13 +149,13 @@ static void settingsClick(float clickX, float clickY)
 		case MATRIX:
 			enumTheme = OLD;
 			memcpy(CurTheme, OldTheme, sizeof(CurTheme));
-			strcpy(settingsMenu[B_THEME].Text, "Old");
+			sfText_setString(settingsMenu[B_THEME].Text, "Old");
 			break;
 
 		case OLD:
 			enumTheme = MATRIX;
 			memcpy(CurTheme, MatrixTheme, sizeof(CurTheme));
-			strcpy(settingsMenu[B_THEME].Text, "Matrix");
+			sfText_setString(settingsMenu[B_THEME].Text, "Matrix");
 			break;
 
 		}
@@ -171,13 +177,13 @@ void playClick(float clickX, float clickY)
 		case GO:
 			PlayingStatus = STOP;
 			sfRectangleShape_setFillColor(controlMenu[B_PLAY].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
-			strcpy(controlMenu[B_PLAY].Text, "Start");
+			sfText_setString(controlMenu[B_PLAY].Text, "Start");
 			break;
 
 		case STOP:
 			PlayingStatus = GO;
 			sfRectangleShape_setFillColor(controlMenu[B_PLAY].Shape, ThemeTosfColor(CurTheme[BackButtonColor]));
-			strcpy(controlMenu[B_PLAY].Text, "Stop");
+			sfText_setString(controlMenu[B_PLAY].Text, "Stop");
 			break;
 
 		}
@@ -188,9 +194,9 @@ void playClick(float clickX, float clickY)
 		{
 			PlayingStatus = STOP;
 			sfRectangleShape_setFillColor(controlMenu[B_PLAY].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
-			strcpy(controlMenu[B_PLAY].Text, "Start");
+			sfText_setString(controlMenu[B_PLAY].Text, "Start");
 		}
-		//TODO: NewGeneration func 
+		nextGen();
 	}
 	else if (sfFloatRect_contains(&controlMenu[B_CLEAR].Bound, clickX, clickY))
 	{
@@ -198,9 +204,9 @@ void playClick(float clickX, float clickY)
 		{
 			PlayingStatus = STOP;
 			sfRectangleShape_setFillColor(controlMenu[B_PLAY].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
-			strcpy(controlMenu[B_PLAY].Text, "Start");
+			sfText_setString(controlMenu[B_PLAY].Text, "Start");
 		}
-		memset(field, 0, sizeof(field));
+		memset(cells, 0, 128*72);
 	}
 	else if (sfFloatRect_contains(&controlMenu[B_RANDOM].Bound, clickX, clickY))
 	{
@@ -208,7 +214,7 @@ void playClick(float clickX, float clickY)
 		for (int i = 0; i < fieldSizes[FieldMode].x; i++)
 			for (int j = 0; j < fieldSizes[FieldMode].y; j++)
 			{
-				field[i][j] = rand() % 2;
+				cells[j * fieldSizes[FieldMode].x + i] = rand() % 2;
 			}
 	}
 	else if (sfFloatRect_contains(&controlMenu[B_BACK].Bound, clickX, clickY))
@@ -217,7 +223,7 @@ void playClick(float clickX, float clickY)
 		{
 			PlayingStatus = STOP;
 			sfRectangleShape_setFillColor(controlMenu[B_PLAY].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
-			strcpy(controlMenu[B_PLAY].Text, "Start");
+			sfText_setString(controlMenu[B_PLAY].Text, "Start");
 		}
 		menuStatus = MENU;
 	}
@@ -228,45 +234,55 @@ void playClick(float clickX, float clickY)
 		if (cellCoordX >= 0 && cellCoordX < fieldSizes[FieldMode].x &&
 			cellCoordY >= 0 && cellCoordY < fieldSizes[FieldMode].y)
 		{
-			field[cellCoordX][cellCoordY] = !field[cellCoordX][cellCoordY];
+			cells[cellCoordX + cellCoordY* fieldSizes[FieldMode].x] = !cells[cellCoordX + cellCoordY * fieldSizes[FieldMode].x];
 		}
+		//TODO: Change vertex in aliveCells array 
 	}
 	for (struct sPatterns* TmpPattern = &startPattern; TmpPattern != NULL; TmpPattern = TmpPattern->next)
 	{
 		if (sfFloatRect_contains(&TmpPattern->Button.Bound, clickX, clickY))
 		{
-			memset(field, 0, sizeof(field));
+			memset(cells, 0, sizeof(cells));
 			for (int j = 0; j < 64; j++)
 				for (int k = 0; k < 48; k++)
-					field[j][k] = TmpPattern->Pattern[j][k];
+					cells[j + k * fieldSizes[FieldMode].x] = TmpPattern->Pattern[j][k];
+
 			break;
 		}
 	}
-
 
 	//TODO: optimize some elements
 }
 
 static void updateInterfaceColors()
 {
-	struct sPatterns* tmpPattern = &startPattern;
-
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		if (i < 3)
 		{
-			sfRectangleShape_setFillColor(settingsMenu[i].Shape, ThemeTosfColor(CurTheme[ButtonColor])); 
+			sfRectangleShape_setFillColor(settingsMenu[i].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
 		}
-		if (i < 4) 
-		{ 
-			sfRectangleShape_setFillColor(mainMenu[i].Shape, ThemeTosfColor(CurTheme[ButtonColor])); 
-		}
+		sfRectangleShape_setFillColor(mainMenu[i].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
+
 		sfRectangleShape_setFillColor(controlMenu[i].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
+	}
+	sfRectangleShape_setFillColor(controlMenu[B_BACK].Shape, ThemeTosfColor(CurTheme[BackButtonColor]));
+	for (struct sPatterns* tmpPattern = &startPattern; tmpPattern != NULL; tmpPattern = tmpPattern->next)
+	{
 		sfRectangleShape_setFillColor(tmpPattern->Button.Shape, ThemeTosfColor(CurTheme[ButtonColor]));
-		tmpPattern = tmpPattern->next;
 	}
 	
 	sfText_setFillColor(gameName, ThemeTosfColor(CurTheme[ButtonColor]));
 
-	//TODO: Update field colors
+	size_t aliveCellsCount = sfVertexArray_getVertexCount(field.aliveCells);
+	for (size_t i = 0; i < aliveCellsCount; i++)
+	{
+		sfVertexArray_getVertex(field.aliveCells, i)->color = ThemeTosfColor(CurTheme[ButtonColor]);
+	}
+
+	size_t netSize = sfVertexArray_getVertexCount(field.fieldNet);
+	for (size_t i = 0; i < netSize; i++)
+	{
+		sfVertexArray_getVertex(field.fieldNet, i)->color = ThemeTosfColor(CurTheme[ButtonColor]);
+	}
 }
