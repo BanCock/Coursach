@@ -124,7 +124,7 @@ static void settingsClick(float clickX, float clickY)
 			break;
 
 		}
-		recreateFieldNet();
+		recreatrFieldNet();
 	}
 	else if (sfFloatRect_contains(&settingsMenu[B_BORDER].Bound, clickX, clickY))
 	{

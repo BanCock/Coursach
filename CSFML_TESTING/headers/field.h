@@ -16,7 +16,7 @@ struct field
 
 void createField();
 void fillAliveCells();
-void recreateFieldNet();
+void recreatrFieldNet();
 void nextGen();
 void fieldUpdate();
 
