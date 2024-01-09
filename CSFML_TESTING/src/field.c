@@ -102,6 +102,7 @@ void recreatrFieldNet()
 
 void nextGen()
 {
+	frequencyCounter.counter++;
 	switch (BorderlessStatus)
 	{
 	case YES:

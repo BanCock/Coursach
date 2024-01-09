@@ -9,4 +9,7 @@
 
 void eventHandle();
 
+void startFreqCounter();
+void resetFreqCounter();
+
 #endif // !EVENTS_H

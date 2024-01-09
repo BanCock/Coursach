@@ -58,6 +58,19 @@ void createMainMenu()
     createButton(&mainMenu[B_EXIT], MAINMENU_BUTTON_SIZE, (sfVector2f) { 480.f, 560.f }, "Exit");
 }
 
+void createCountFreq()
+{
+    frequencyCounter.clock = sfClock_create();
+    frequencyCounter.counter = 0u;
+    frequencyCounter.text = sfText_create();
+
+    sfText_setFont(frequencyCounter.text, font);
+    sfText_setPosition(frequencyCounter.text, (sfVector2f) { 1160, 140 });
+    sfText_setCharacterSize(frequencyCounter.text, 20);
+    sfText_setFillColor(frequencyCounter.text, ThemeTosfColor(CurTheme[TextColor]));
+    //sfText_setString(frequencyCounter.text, "11199,99");
+}
+
 void createControlMenu()
 {
     createButton(&controlMenu[B_START], CONTROLMENU_BUTTON_SIZE, (sfVector2f) { 0, 180 - 1 }, "Start");
@@ -156,7 +169,6 @@ void createTitle()
     sfText_setPosition(gameName, TextPos);
 
     sfText_setFillColor(gameName, ThemeTosfColor(CurTheme[ButtonColor]));
-    //sfFont_destroy(titleFont);
 }
 
 void loadPatterns()
@@ -250,6 +262,7 @@ static void drawSettings()
     sfRenderWindow_drawText(window, settingsHead, NULL);
     sfRenderWindow_drawText(window, settingsText, NULL);
 
+
     for (int i = 0; i < 3; i++)
     {
         sfRenderWindow_drawRectangleShape(window, settingsMenu[i].Shape, NULL);
@@ -265,6 +278,8 @@ static void drawPlay()
     fillAliveCells();
     sfRenderWindow_drawVertexArray(window, field.fieldNet, NULL);
     sfRenderWindow_drawVertexArray(window, field.aliveCells, NULL);
+
+    sfRenderWindow_drawText(window, frequencyCounter.text, NULL);
 
     for (int i = 0; i < 5; i++)
     {
@@ -282,7 +297,6 @@ static void drawPlay()
 
 void cleanInterface()
 {
-    struct sPatterns* tmpPattern = &startPattern;
 
     for (int i = 0; i < 5; i++)
     {
@@ -298,11 +312,9 @@ void cleanInterface()
         }
         sfRectangleShape_destroy(controlMenu[i].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
         sfText_destroy(controlMenu[i].Text);
-
-        sfRectangleShape_destroy(tmpPattern->Button.Shape, ThemeTosfColor(CurTheme[ButtonColor]));
-        sfText_destroy(tmpPattern->Button.Text);
-        tmpPattern = tmpPattern->next;
     }
+
+
 
     sfRectangleShape_destroy(aboutBackground);
     sfRectangleShape_destroy(settingstBackground);
@@ -313,11 +325,19 @@ void cleanInterface()
     sfText_destroy(aboutDescriptionHead);
     sfText_destroy(aboutDescriptionText);
 
+    sfText_destroy(frequencyCounter.text);
+    sfClock_destroy(frequencyCounter.clock);
+
     sfFont_destroy(font);
 }
 
 void cleanPatterns()
 {
+    for (struct sPatterns* tmpPattern = &startPattern; tmpPattern != NULL; tmpPattern = tmpPattern->next)
+    {
+        sfRectangleShape_destroy(tmpPattern->Button.Shape, ThemeTosfColor(CurTheme[ButtonColor]));
+        sfText_destroy(tmpPattern->Button.Text);
+    }
     struct sPatterns* Pattern = startPattern.next;
     for (; Pattern != NULL;)
     {
