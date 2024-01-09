@@ -8,6 +8,7 @@ void gameInit()
 	setStartState();
 	createFont();
 	createMainMenu();
+	createCountFreq();
 	createControlMenu();
 	createSettingsMenu();
 	createAboutMenu();
@@ -19,11 +20,13 @@ void gameInit()
 
 void gameLoop()
 {
+	startFreqCounter();
 	while (sfRenderWindow_isOpen(window))
 	{
 		eventHandle();
 		interfaceDraw();
 		fieldUpdate();
+		resetFreqCounter();
 	}
 }
 

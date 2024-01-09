@@ -30,6 +30,24 @@ void eventHandle()
 
 }
 
+void startFreqCounter()
+{
+	sfClock_restart(frequencyCounter.clock);
+}
+
+void resetFreqCounter()
+{	
+	float time = sfTime_asSeconds(sfClock_getElapsedTime(frequencyCounter.clock));
+	if (time >= 1.00f)
+	{
+		char num[16] = "";
+		snprintf(num, 16u, "%.2f", frequencyCounter.counter / time);
+		sfText_setString(frequencyCounter.text, num);
+		frequencyCounter.counter = 0;
+		sfClock_restart(frequencyCounter.clock);
+	}
+}
+
 static sfBool leftClick(sfEvent event)
 {
 	return (event.type == sfEvtMouseButtonPressed && 
@@ -49,7 +67,6 @@ static void clickHandle(float clickX, float clickY)
 		break;
 
 	case PLAYING:
-		//TODO: Handle the field interaction
 		playClick(clickX, clickY);
 		break;
 

@@ -27,6 +27,15 @@ struct sPatterns
     struct sPatterns* next;
 };
 
+struct countFreq
+{
+    int counter;
+    sfClock* clock;
+    sfText* text;
+};
+
+struct countFreq frequencyCounter;
+
 sfText* gameName;
 
 struct sPatterns startPattern;
@@ -38,6 +47,7 @@ struct Button settingsMenu[3];
 void createFont();
 void createButton(struct Button* button, sfVector2f size, sfVector2f position, const char* text);
 void createMainMenu();
+void createCountFreq();
 void createControlMenu();
 void createSettingsMenu();
 void createAboutMenu();
