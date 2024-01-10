@@ -261,7 +261,6 @@ static void drawSettings()
 
 static void drawPlay()
 {
-    //TODO: Replace fillAliveCells - must change only one Vertex in events.c
     fillAliveCells();
     sfRenderWindow_drawVertexArray(window, field.fieldNet, NULL);
     sfRenderWindow_drawVertexArray(window, field.aliveCells, NULL);

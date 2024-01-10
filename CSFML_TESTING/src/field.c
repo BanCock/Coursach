@@ -110,7 +110,6 @@ void nextGen()
 	case NO:
 		nextGenBlNo();
 		break;
-
 	}
 }
 
@@ -122,6 +121,7 @@ void fieldUpdate()
 		nextGen();
 		break;
 	}
+	//Note: case STOP?
 }
 
 void cleanField()
@@ -158,6 +158,7 @@ static void nextGenBlYes()
 
 void nextGenBlNo()
 {
+	// Уже пункты 1 и 2 выполнены. Будем вставлять как оптимизацию или нет?
 	for (int x = 0; x < fieldSizes[FieldMode].x; x++)
 		for (int y = 0; y < fieldSizes[FieldMode].y; y++)
 		{
