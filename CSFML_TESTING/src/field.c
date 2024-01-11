@@ -178,29 +178,16 @@ void nextGenBlNo()
 				* (unsigned long long*)(cells + down * (fieldSizes[FieldMode].x + 2) + right);
 		}
 	unsigned long long alive, neighbours, an, mnl;
-	int index; 
-	for (int y = 1; y < fieldSizes[FieldMode].y + 1; y++)
-		for (int x = 1; x < fieldSizes[FieldMode].x + 1; x+=8)
-		{
-			index = y * (fieldSizes[FieldMode].x + 2) + x;
-			/*neighbours = ((cellsBuf[index] & 0b111) | (cells[index] << 3));
-			cells[index] = table[neighbors];*/
-			neighbours = *(unsigned long long*)(cellsBuf + index);
-			alive = *(unsigned long long*)(cells + index);
-			neighbours &= 0b0000011100000111000001110000011100000111000001110000011100000111ul;
+	int index;
 
-			an = ((neighbours & ~0b0000000100000001000000010000000100000001000000010000000100000001ul) >> 1) | (alive << 2);
-			an ^= ~0b0000010100000101000001010000010100000101000001010000010100000101ul;
-			an &= (an >> 2);
-			an &= (an >> 1);
-			an &= 0b0000000100000001000000010000000100000001000000010000000100000001ul;
+	char alivePerNeighbours[16] = {0};
+	alivePerNeighbours[3] = 1;
+	alivePerNeighbours[10] = 1;
+	alivePerNeighbours[11] = 1;
+	for (int i = (fieldSizes[FieldMode].x + 2); i < (fieldSizes[FieldMode].x + 2) * ((fieldSizes[FieldMode].y + 2) - 1); i++)
+	{
+		char neighbours = (char)((cellsBuf[i] & 7) | (cells[i] << 3));
+		cells[i] = alivePerNeighbours[neighbours];
+	}
 
-			mnl = neighbours | (alive << 3);
-			mnl ^= ~0b0000001100000011000000110000001100000011000000110000001100000011ul;
-			mnl &= (mnl >> 2);
-			mnl &= (mnl >> 1);
-			mnl &= 0b0000000100000001000000010000000100000001000000010000000100000001ul;
-
-			*(unsigned long long*)(cells + index) = an | mnl;
-		}
 }
