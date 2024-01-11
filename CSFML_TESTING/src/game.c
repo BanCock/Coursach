@@ -23,7 +23,9 @@ void gameLoop()
 	startFreqCounter();
 	while (sfRenderWindow_isOpen(window))
 	{
+#ifndef _VOID_GAME
 		eventHandle();
+#endif // !_VOID_GAME
 		interfaceDraw();
 		fieldUpdate();
 		resetFreqCounter();

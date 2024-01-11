@@ -102,26 +102,24 @@ void recreatrFieldNet()
 void nextGen()
 {
 	frequencyCounter.counter++;
+#ifndef _VOID_GAME
 	switch (BorderlessStatus)
 	{
-	case YES:
-		nextGenBlYes();
-		break;
 	case NO:
 		nextGenBlNo();
 		break;
-
+	case YES:
+		nextGenBlYes();
+		break;
 	}
+#endif // !_VOID_GAME
+
+	
 }
 
 void fieldUpdate()
 {
-	switch (PlayingStatus)
-	{
-	case GO:
-		nextGen();
-		break;
-	}
+	if (!PlayingStatus) nextGen();
 }
 
 void cleanField()

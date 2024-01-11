@@ -207,10 +207,14 @@ void loadPatterns()
     }
 }
 
+
 void interfaceDraw()
 {
     sfRenderWindow_clear(window, ThemeTosfColor(CurTheme[WallColor]));
 
+    sfRenderWindow_drawText(window, frequencyCounter.text, NULL);
+
+#ifndef _VOID_GAME
     sfRenderWindow_drawText(window, gameName, NULL);
 
     switch (menuStatus)
@@ -232,6 +236,7 @@ void interfaceDraw()
         break;
 
     }
+#endif // !_VOID_GAME
     sfRenderWindow_display(window);
 }
 
@@ -278,12 +283,10 @@ static void drawSettings()
 
 static void drawPlay()
 {
-    //TODO: Replace fillAliveCells - must change only one Vertex in events.c
+    
     fillAliveCells();
     sfRenderWindow_drawVertexArray(window, field.fieldNet, NULL);
     sfRenderWindow_drawVertexArray(window, field.aliveCells, NULL);
-
-    sfRenderWindow_drawText(window, frequencyCounter.text, NULL);
 
     sfRenderWindow_drawRectangleShape(window, controlMenu[0].Shape, NULL);
     sfRenderWindow_drawText(window, controlMenu[0].Text, NULL);
@@ -295,13 +298,12 @@ static void drawPlay()
     sfRenderWindow_drawText(window, controlMenu[3].Text, NULL);
     sfRenderWindow_drawRectangleShape(window, controlMenu[4].Shape, NULL);
     sfRenderWindow_drawText(window, controlMenu[4].Text, NULL);
-    
+
     for (struct sPatterns* tmpPattern = &startPattern; tmpPattern != NULL; tmpPattern = tmpPattern->next)
     {
         sfRenderWindow_drawRectangleShape(window, tmpPattern->Button.Shape, NULL);
         sfRenderWindow_drawText(window, tmpPattern->Button.Text, NULL);
     }
-
 }
 
 void cleanInterface()
@@ -332,7 +334,6 @@ void cleanInterface()
     sfText_destroy(controlMenu[3].Text);
     sfRectangleShape_destroy(controlMenu[4].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
     sfText_destroy(controlMenu[4].Text);
-
 
     sfRectangleShape_destroy(aboutBackground);
     sfRectangleShape_destroy(settingstBackground);

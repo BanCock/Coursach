@@ -223,7 +223,7 @@ void playClick(float clickX, float clickY)
 			sfRectangleShape_setFillColor(controlMenu[B_PLAY].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
 			sfText_setString(controlMenu[B_PLAY].Text, "Start");
 		}
-		memset(cells, 0, 130*74);
+		memset(cells, 0, (fieldSizes[FieldMode].x + 2) * (fieldSizes[FieldMode].y + 2));
 	}
 	else if (sfFloatRect_contains(&controlMenu[B_RANDOM].Bound, clickX, clickY))
 	{
@@ -273,17 +273,20 @@ void playClick(float clickX, float clickY)
 
 static void updateInterfaceColors()
 {
-	for (int i = 0; i < 4; i++)
-	{
-		if (i < 3)
-		{
-			sfRectangleShape_setFillColor(settingsMenu[i].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
-		}
-		sfRectangleShape_setFillColor(mainMenu[i].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
+	sfRectangleShape_setFillColor(settingsMenu[0].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
+	sfRectangleShape_setFillColor(settingsMenu[1].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
+	sfRectangleShape_setFillColor(settingsMenu[2].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
 
-		sfRectangleShape_setFillColor(controlMenu[i].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
-	}
-	sfRectangleShape_setFillColor(controlMenu[B_BACK].Shape, ThemeTosfColor(CurTheme[BackButtonColor]));
+	sfRectangleShape_setFillColor(mainMenu[0].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
+	sfRectangleShape_setFillColor(mainMenu[1].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
+	sfRectangleShape_setFillColor(mainMenu[2].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
+	sfRectangleShape_setFillColor(mainMenu[3].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
+
+	sfRectangleShape_setFillColor(controlMenu[0].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
+	sfRectangleShape_setFillColor(controlMenu[1].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
+	sfRectangleShape_setFillColor(controlMenu[2].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
+	sfRectangleShape_setFillColor(controlMenu[3].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
+	sfRectangleShape_setFillColor(controlMenu[4].Shape, ThemeTosfColor(CurTheme[BackButtonColor]));
 	for (struct sPatterns* tmpPattern = &startPattern; tmpPattern != NULL; tmpPattern = tmpPattern->next)
 	{
 		sfRectangleShape_setFillColor(tmpPattern->Button.Shape, ThemeTosfColor(CurTheme[ButtonColor]));
