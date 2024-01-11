@@ -9,8 +9,8 @@ static void nextGenBlNo();
 
 void createField()
 {
-	cells = calloc(128u * 72u, sizeof(char));
-	cellsBuf = calloc(128u * 72u, sizeof(char));
+	cells = calloc(130u * 74u, sizeof(char));
+	cellsBuf = calloc(130u * 74u, sizeof(char));
 
 	field.fieldNet = sfVertexArray_create();
 	sfVertexArray_setPrimitiveType(field.fieldNet, sfLines);
@@ -54,9 +54,9 @@ void fillAliveCells()
 	for (int i = 0; i < fieldSizes[FieldMode].x; i++)
 		for (int j = 0; j < fieldSizes[FieldMode].y; j++)
 		{
-			if (cells[i + j * fieldSizes[FieldMode].x])
+			if (cells[1 + i + (j + 1) * (fieldSizes[FieldMode].x + 2)])
 			{
-				Cell.position.x = 640 - fieldSizes[FieldMode].x * 7 / 2 + i * 7;
+				Cell.position.x = 640 - (fieldSizes[FieldMode].x) * 7 / 2 + i * 7;
 				Cell.position.y = 180 + j * 7;
 				sfVertexArray_append(field.aliveCells, Cell);
 				Cell.position.x += 6;
@@ -136,20 +136,20 @@ void cleanField()
 
 static void nextGenBlYes()
 {
-	for (int x = 0; x < fieldSizes[FieldMode].x; x++)
-		for (int y = 0; y < fieldSizes[FieldMode].y; y++)
+	for (int x = 1; x < fieldSizes[FieldMode].x + 1; x++)
+		for (int y = 1; y < fieldSizes[FieldMode].y + 1; y++)
 		{
-			int LeftSide = (x - 1 < 0) ? fieldSizes[FieldMode].x - 1 : x - 1;
-			int RightSide = (x + 1 > fieldSizes[FieldMode].x - 1) ? 0 : x + 1;
-			int UpSide = (y - 1 < 0) ? fieldSizes[FieldMode].y - 1 : y - 1;
-			int DownSide = (y + 1 > fieldSizes[FieldMode].y - 1) ? 0 : y + 1;
+			int LeftSide = (x - 1 < 1) ? fieldSizes[FieldMode].x : x - 1;
+			int RightSide = (x + 1 > fieldSizes[FieldMode].x) ? 1 : x + 1;
+			int UpSide = (y - 1 < 1) ? fieldSizes[FieldMode].y : y - 1;
+			int DownSide = (y + 1 > fieldSizes[FieldMode].y) ? 0 : y + 1;
 
-			int AliveCell = cells[UpSide * fieldSizes[FieldMode].x + LeftSide] + cells[UpSide * fieldSizes[FieldMode].x + x] + \
-				cells[UpSide * fieldSizes[FieldMode].x + RightSide] + cells[y * fieldSizes[FieldMode].x + LeftSide] + \
-				cells[y * fieldSizes[FieldMode].x + RightSide] + cells[DownSide * fieldSizes[FieldMode].x + LeftSide] + \
-				cells[DownSide * fieldSizes[FieldMode].x + x] + cells[DownSide * fieldSizes[FieldMode].x + RightSide];
+			int AliveCell = cells[UpSide * (fieldSizes[FieldMode].x + 2) + LeftSide] + cells[UpSide * (fieldSizes[FieldMode].x + 2) + x] + \
+				cells[UpSide * (fieldSizes[FieldMode].x + 2) + RightSide] + cells[y * (fieldSizes[FieldMode].x + 2) + LeftSide] + \
+				cells[y * (fieldSizes[FieldMode].x + 2) + RightSide] + cells[DownSide * (fieldSizes[FieldMode].x + 2) + LeftSide] + \
+				cells[DownSide * (fieldSizes[FieldMode].x + 2) + x] + cells[DownSide * (fieldSizes[FieldMode].x + 2) + RightSide];
 
-			cellsBuf[y * fieldSizes[FieldMode].x + x] = (AliveCell == 3 || (AliveCell == 2 && cells[y * fieldSizes[FieldMode].x + x])) ? 1 : 0;
+			cellsBuf[y * (fieldSizes[FieldMode].x + 2) + x] = (AliveCell == 3 || (AliveCell == 2 && cells[y * (fieldSizes[FieldMode].x + 2) + x])) ? 1 : 0;
 		}
 	char* tmp = cells;
 	cells = cellsBuf;

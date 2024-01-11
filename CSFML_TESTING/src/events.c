@@ -14,7 +14,7 @@ static void updateInterfaceColors();
 void eventHandle()
 {
 	sfEvent event;
-	while (sfRenderWindow_pollEvent(window, &event))
+	if (sfRenderWindow_pollEvent(window, &event))
 	{
 		if (event.type == sfEvtClosed)
 		{
@@ -223,15 +223,15 @@ void playClick(float clickX, float clickY)
 			sfRectangleShape_setFillColor(controlMenu[B_PLAY].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
 			sfText_setString(controlMenu[B_PLAY].Text, "Start");
 		}
-		memset(cells, 0, 128*72);
+		memset(cells, 0, 130*74);
 	}
 	else if (sfFloatRect_contains(&controlMenu[B_RANDOM].Bound, clickX, clickY))
 	{
 		srand(time(NULL));
-		for (int i = 0; i < fieldSizes[FieldMode].x; i++)
-			for (int j = 0; j < fieldSizes[FieldMode].y; j++)
+		for (int j = 1; j < fieldSizes[FieldMode].y + 1; j++)
+			for (int i = 1; i < fieldSizes[FieldMode].x + 1; i++)
 			{
-				cells[j * fieldSizes[FieldMode].x + i] = rand() % 2;
+				cells[j * (fieldSizes[FieldMode].x + 2) + i] = rand() % 2;
 			}
 	}
 	else if (sfFloatRect_contains(&controlMenu[B_BACK].Bound, clickX, clickY))
@@ -251,7 +251,7 @@ void playClick(float clickX, float clickY)
 		if (cellCoordX >= 0 && cellCoordX < fieldSizes[FieldMode].x &&
 			cellCoordY >= 0 && cellCoordY < fieldSizes[FieldMode].y)
 		{
-			cells[cellCoordX + cellCoordY* fieldSizes[FieldMode].x] = !cells[cellCoordX + cellCoordY * fieldSizes[FieldMode].x];
+			cells[cellCoordX + 1 + (cellCoordY + 1) * (fieldSizes[FieldMode].x + 2)] = !cells[cellCoordX + 1 + (cellCoordY + 1) * (fieldSizes[FieldMode].x + 2)];
 		}
 		//TODO: Change vertex in aliveCells array 
 	}
@@ -262,7 +262,7 @@ void playClick(float clickX, float clickY)
 			memset(cells, 0, sizeof(cells));
 			for (int j = 0; j < 64; j++)
 				for (int k = 0; k < 48; k++)
-					cells[j + k * fieldSizes[FieldMode].x] = TmpPattern->Pattern[j][k];
+					cells[j + 1 + (k + 1) * (fieldSizes[FieldMode].x + 2)] = TmpPattern->Pattern[j][k];
 
 			break;
 		}
