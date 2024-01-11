@@ -58,16 +58,16 @@ static void clickHandle(float clickX, float clickY)
 {
 	switch (menuStatus)
 	{
+	case PLAYING:
+		playClick(clickX, clickY);
+		break;
+
 	case MENU:
 		menuClick(clickX, clickY);
 		break;
 
 	case ABOUT:
 		aboutClick(clickX, clickY);
-		break;
-
-	case PLAYING:
-		playClick(clickX, clickY);
 		break;
 
 	case SETTINGS:

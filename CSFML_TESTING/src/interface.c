@@ -215,16 +215,16 @@ void interfaceDraw()
 
     switch (menuStatus)
     {
+    case PLAYING:
+        drawPlay();
+        break;
+
     case MENU:
         drawMainMenu();
         break;
 
     case ABOUT:
         drawAbout();
-        break;
-
-    case PLAYING:
-        drawPlay();
         break;
 
     case SETTINGS:
@@ -237,11 +237,14 @@ void interfaceDraw()
 
 static void drawMainMenu()
 {
-    for (int i = 0; i < 4; i++)
-    {
-        sfRenderWindow_drawRectangleShape(window, mainMenu[i].Shape, NULL);
-        sfRenderWindow_drawText(window, mainMenu[i].Text, NULL);
-    }
+    sfRenderWindow_drawRectangleShape(window, mainMenu[0].Shape, NULL);
+    sfRenderWindow_drawText(window, mainMenu[0].Text, NULL);
+    sfRenderWindow_drawRectangleShape(window, mainMenu[1].Shape, NULL);
+    sfRenderWindow_drawText(window, mainMenu[1].Text, NULL);
+    sfRenderWindow_drawRectangleShape(window, mainMenu[2].Shape, NULL);
+    sfRenderWindow_drawText(window, mainMenu[2].Text, NULL);
+    sfRenderWindow_drawRectangleShape(window, mainMenu[3].Shape, NULL);
+    sfRenderWindow_drawText(window, mainMenu[3].Text, NULL);
 }
 
 static void drawAbout()
@@ -262,12 +265,13 @@ static void drawSettings()
     sfRenderWindow_drawText(window, settingsHead, NULL);
     sfRenderWindow_drawText(window, settingsText, NULL);
 
+    sfRenderWindow_drawRectangleShape(window, settingsMenu[0].Shape, NULL);
+    sfRenderWindow_drawText(window, settingsMenu[0].Text, NULL);
+    sfRenderWindow_drawRectangleShape(window, settingsMenu[1].Shape, NULL);
+    sfRenderWindow_drawText(window, settingsMenu[1].Text, NULL);
+    sfRenderWindow_drawRectangleShape(window, settingsMenu[2].Shape, NULL);
+    sfRenderWindow_drawText(window, settingsMenu[2].Text, NULL);
 
-    for (int i = 0; i < 3; i++)
-    {
-        sfRenderWindow_drawRectangleShape(window, settingsMenu[i].Shape, NULL);
-        sfRenderWindow_drawText(window, settingsMenu[i].Text, NULL);
-    }
     sfRenderWindow_drawRectangleShape(window, controlMenu[B_BACK].Shape, NULL);
     sfRenderWindow_drawText(window, controlMenu[B_BACK].Text, NULL);
 }
@@ -281,11 +285,16 @@ static void drawPlay()
 
     sfRenderWindow_drawText(window, frequencyCounter.text, NULL);
 
-    for (int i = 0; i < 5; i++)
-    {
-        sfRenderWindow_drawRectangleShape(window, controlMenu[i].Shape, NULL);
-        sfRenderWindow_drawText(window, controlMenu[i].Text, NULL);
-    }
+    sfRenderWindow_drawRectangleShape(window, controlMenu[0].Shape, NULL);
+    sfRenderWindow_drawText(window, controlMenu[0].Text, NULL);
+    sfRenderWindow_drawRectangleShape(window, controlMenu[1].Shape, NULL);
+    sfRenderWindow_drawText(window, controlMenu[1].Text, NULL);
+    sfRenderWindow_drawRectangleShape(window, controlMenu[2].Shape, NULL);
+    sfRenderWindow_drawText(window, controlMenu[2].Text, NULL);
+    sfRenderWindow_drawRectangleShape(window, controlMenu[3].Shape, NULL);
+    sfRenderWindow_drawText(window, controlMenu[3].Text, NULL);
+    sfRenderWindow_drawRectangleShape(window, controlMenu[4].Shape, NULL);
+    sfRenderWindow_drawText(window, controlMenu[4].Text, NULL);
     
     for (struct sPatterns* tmpPattern = &startPattern; tmpPattern != NULL; tmpPattern = tmpPattern->next)
     {
@@ -297,23 +306,32 @@ static void drawPlay()
 
 void cleanInterface()
 {
+    sfRectangleShape_destroy(settingsMenu[0].Shape);
+    sfText_destroy(settingsMenu[0].Text);
+    sfRectangleShape_destroy(settingsMenu[1].Shape);
+    sfText_destroy(settingsMenu[1].Text);
+    sfRectangleShape_destroy(settingsMenu[2].Shape);
+    sfText_destroy(settingsMenu[2].Text);
 
-    for (int i = 0; i < 5; i++)
-    {
-        if (i < 3)
-        {
-            sfRectangleShape_destroy(settingsMenu[i].Shape);
-            sfText_destroy(settingsMenu[i].Text);
-        }
-        if (i < 4)
-        {
-            sfRectangleShape_destroy(mainMenu[i].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
-            sfText_destroy(mainMenu[i].Text);
-        }
-        sfRectangleShape_destroy(controlMenu[i].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
-        sfText_destroy(controlMenu[i].Text);
-    }
+    sfRectangleShape_destroy(mainMenu[0].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
+    sfText_destroy(mainMenu[0].Text);
+    sfRectangleShape_destroy(mainMenu[1].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
+    sfText_destroy(mainMenu[1].Text);
+    sfRectangleShape_destroy(mainMenu[2].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
+    sfText_destroy(mainMenu[2].Text);
+    sfRectangleShape_destroy(mainMenu[3].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
+    sfText_destroy(mainMenu[3].Text);
 
+    sfRectangleShape_destroy(controlMenu[0].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
+    sfText_destroy(controlMenu[0].Text);
+    sfRectangleShape_destroy(controlMenu[1].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
+    sfText_destroy(controlMenu[1].Text);
+    sfRectangleShape_destroy(controlMenu[2].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
+    sfText_destroy(controlMenu[2].Text);
+    sfRectangleShape_destroy(controlMenu[3].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
+    sfText_destroy(controlMenu[3].Text);
+    sfRectangleShape_destroy(controlMenu[4].Shape, ThemeTosfColor(CurTheme[ButtonColor]));
+    sfText_destroy(controlMenu[4].Text);
 
 
     sfRectangleShape_destroy(aboutBackground);
