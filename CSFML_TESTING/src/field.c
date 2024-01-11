@@ -159,26 +159,30 @@ static void nextGenBlYes()
 
 void nextGenBlNo()
 {
-	for (int x = 0; x < fieldSizes[FieldMode].x; x++)
-		for (int y = 0; y < fieldSizes[FieldMode].y; y++)
+	unsigned long long* ullcellsBuf;
+	int left, right, up, down;
+	for (int y = 1; y < fieldSizes[FieldMode].y; y++)
+		for (int x = 1; x < fieldSizes[FieldMode].x; x += 8)
 		{
-			int LeftSide = x - 1;
-			int RightSide = x + 1;
-			int UpSide = y - 1;
-			int DownSide = y + 1;
+			left = x - 1;
+			right = x + 1;
+			up = y - 1;
+			down = y + 1;
+			ullcellsBuf = (unsigned long long*)(cellsBuf + y * (fieldSizes[FieldMode].x + 2) + x);
+			*ullcellsBuf = *(unsigned long long*)(cells + up * (fieldSizes[FieldMode].x + 2) + left) + \
+				* (unsigned long long*)(cells + up * (fieldSizes[FieldMode].x + 2) + x) + \
+				* (unsigned long long*)(cells + up * (fieldSizes[FieldMode].x + 2) + right) + \
+				* (unsigned long long*)(cells + y * (fieldSizes[FieldMode].x + 2) + left) + \
+				* (unsigned long long*)(cells + y * (fieldSizes[FieldMode].x + 2) + right) + \
+				* (unsigned long long*)(cells + down * (fieldSizes[FieldMode].x + 2) + left) + \
+				* (unsigned long long*)(cells + down * (fieldSizes[FieldMode].x + 2) + x) + \
+				* (unsigned long long*)(cells + down * (fieldSizes[FieldMode].x + 2) + right);
 
-			int AliveCell = (LeftSide >= 0) * (UpSide >= 0) * cells[UpSide * fieldSizes[FieldMode].x + LeftSide] + \
-							(UpSide >= 0) * cells[UpSide * fieldSizes[FieldMode].x + x] + \
-							(UpSide >= 0) * (RightSide <= fieldSizes[FieldMode].x) * cells[UpSide * fieldSizes[FieldMode].x + RightSide] + \
-							(LeftSide >= 0) * cells[y * fieldSizes[FieldMode].x + LeftSide] + \
-							(RightSide <= fieldSizes[FieldMode].x) * cells[y * fieldSizes[FieldMode].x + RightSide] + \
-							(DownSide <= fieldSizes[FieldMode].y) * (LeftSide >= 0) * cells[DownSide * fieldSizes[FieldMode].x + LeftSide] + \
-							(DownSide <= fieldSizes[FieldMode].y) * cells[DownSide * fieldSizes[FieldMode].x + x] + \
-							(DownSide <= fieldSizes[FieldMode].y) * (RightSide <= fieldSizes[FieldMode].x) * cells[DownSide * fieldSizes[FieldMode].x + RightSide];
-
-			cellsBuf[y * fieldSizes[FieldMode].x + x] = (AliveCell == 3 || (AliveCell == 2 && cells[y * fieldSizes[FieldMode].x + x])) ? 1 : 0;
+			//cellsBuf[y * fieldSizes[FieldMode].x + x] = (AliveCell == 3 || (AliveCell == 2 && cells[y * fieldSizes[FieldMode].x + x])) ? 1 : 0;
 		}
-	char* tmp = cells;
-	cells = cellsBuf;
-	cellsBuf = tmp;
+	for (int x = 1; x < fieldSizes[FieldMode].x + 1; x++)
+		for (int y = 1; y < fieldSizes[FieldMode].y + 1; y++)
+		{
+			cells[y * (fieldSizes[FieldMode].x + 2) + x] = (cellsBuf[y * (fieldSizes[FieldMode].x + 2) + x] == 3 || (cellsBuf[y * (fieldSizes[FieldMode].x + 2) + x] == 2 && cells[y * (fieldSizes[FieldMode].x + 2) + x])) ? 1 : 0;
+		}
 }
